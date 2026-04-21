@@ -43,7 +43,8 @@ const MEASURE_ROWS = ["1", "2", "3", "Trung bình"];
 
 function buildMeasurementHeaderRow() {
   const dynamicHeaders = MEASURE_COLUMNS.map(
-    (col) => `<th class="px-2 md:px-3 py-2 md:py-3 min-w-[96px] md:min-w-[120px]">\\( ${col.key} \\)</th>`,
+    (col) =>
+      `<th class="px-2 md:px-3 py-2 md:py-3 min-w-[96px] md:min-w-[120px]">\\( ${col.key} \\)</th>`,
   ).join("");
 
   return `
@@ -239,7 +240,8 @@ const CALCULATION_ITEMS = [
     title: "d) Tính \\( \\overline{V} \\) và \\( \\Delta V \\)",
     lines: [
       {
-        mathExpression: "\\overline{V} = \\overline{a}\\,\\overline{b}\\,\\overline{c}",
+        mathExpression:
+          "\\overline{V} = \\overline{a}\\,\\overline{b}\\,\\overline{c}",
         valueId: "calc-v-mean",
         substituteId: "sub-v-mean",
       },
