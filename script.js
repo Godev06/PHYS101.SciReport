@@ -395,6 +395,26 @@ function setCalculationValue(id, value) {
   }
 }
 
+function setCalculationMath(id, texExpression) {
+  const target = document.getElementById(id);
+  if (!target) {
+    return null;
+  }
+  target.innerHTML = `\\( ${texExpression} \\)`;
+  return target;
+}
+
+function typesetTargets(targets) {
+  if (!targets.length) {
+    return;
+  }
+  if (window.MathJax && typeof window.MathJax.typesetPromise === "function") {
+    window.MathJax.typesetPromise(targets).catch(() => {
+      // Keep UI responsive even if one expression is malformed.
+    });
+  }
+}
+
 function formatApproxNumber(value, digits = 4) {
   return formatNumber(value, digits);
 }
@@ -573,6 +593,7 @@ function fillSupportTable(partId, calculation, series) {
 }
 
 function renderAutoFillResult(partId, calculation, series, deltaHt) {
+  const mathTargets = [];
   const ids = [
     "delta-ht-a",
     "delta-ht-b",
@@ -649,43 +670,59 @@ function renderAutoFillResult(partId, calculation, series, deltaHt) {
     `calc-${partId}-total-delta-m`,
     formatNumber(totalDeltas.m, 4),
   );
-  setCalculationValue(
-    `sub-${partId}-total-delta-a`,
-    `${formatNumber(meanDeltas.a, 4)} + ${formatNumber(deltaHt.a || 0, 4)}`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-total-delta-a`,
+      `${formatNumber(meanDeltas.a, 4)} + ${formatNumber(deltaHt.a || 0, 4)}`,
+    ),
   );
-  setCalculationValue(
-    `sub-${partId}-total-delta-b`,
-    `${formatNumber(meanDeltas.b, 4)} + ${formatNumber(deltaHt.b || 0, 4)}`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-total-delta-b`,
+      `${formatNumber(meanDeltas.b, 4)} + ${formatNumber(deltaHt.b || 0, 4)}`,
+    ),
   );
-  setCalculationValue(
-    `sub-${partId}-total-delta-c`,
-    `${formatNumber(meanDeltas.c, 4)} + ${formatNumber(deltaHt.c || 0, 4)}`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-total-delta-c`,
+      `${formatNumber(meanDeltas.c, 4)} + ${formatNumber(deltaHt.c || 0, 4)}`,
+    ),
   );
-  setCalculationValue(
-    `sub-${partId}-total-delta-m`,
-    `${formatNumber(meanDeltas.m, 4)} + ${formatNumber(deltaHt.m || 0, 4)}`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-total-delta-m`,
+      `${formatNumber(meanDeltas.m, 4)} + ${formatNumber(deltaHt.m || 0, 4)}`,
+    ),
   );
 
   setCalculationValue(`calc-${partId}-v-mean`, formatNumber(vMean, 6));
-  setCalculationValue(
-    `sub-${partId}-v-mean`,
-    `${formatNumber(means.a, 4)} × ${formatNumber(means.b, 4)} × ${formatNumber(means.c, 4)}`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-v-mean`,
+      `${formatNumber(means.a, 4)} \\times ${formatNumber(means.b, 4)} \\times ${formatNumber(means.c, 4)}`,
+    ),
   );
   setCalculationValue(`calc-${partId}-v-delta`, formatNumber(vDelta, 6));
-  setCalculationValue(
-    `sub-${partId}-v-delta`,
-    `${formatNumber(vMean, 6)} × (${formatNumber(totalDeltas.a, 4)}/${formatNumber(means.a, 4)} + ${formatNumber(totalDeltas.b, 4)}/${formatNumber(means.b, 4)} + ${formatNumber(totalDeltas.c, 4)}/${formatNumber(means.c, 4)})`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-v-delta`,
+      `${formatNumber(vMean, 6)} \\times \\left(\\dfrac{${formatNumber(totalDeltas.a, 4)}}{${formatNumber(means.a, 4)}} + \\dfrac{${formatNumber(totalDeltas.b, 4)}}{${formatNumber(means.b, 4)}} + \\dfrac{${formatNumber(totalDeltas.c, 4)}}{${formatNumber(means.c, 4)}}\\right)`,
+    ),
   );
 
   setCalculationValue(`calc-${partId}-p-mean`, formatNumber(pMean, 6));
-  setCalculationValue(
-    `sub-${partId}-p-mean`,
-    `${formatNumber(means.m, 4)} / ${formatNumber(vMean, 6)}`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-p-mean`,
+      `\\dfrac{${formatNumber(means.m, 4)}}{${formatNumber(vMean, 6)}}`,
+    ),
   );
   setCalculationValue(`calc-${partId}-p-delta`, formatNumber(pDelta, 6));
-  setCalculationValue(
-    `sub-${partId}-p-delta`,
-    `${formatNumber(pMean, 6)} × (${formatNumber(totalDeltas.m, 4)}/${formatNumber(means.m, 4)} + ${formatNumber(vDelta, 6)}/${formatNumber(vMean, 6)})`,
+  mathTargets.push(
+    setCalculationMath(
+      `sub-${partId}-p-delta`,
+      `${formatNumber(pMean, 6)} \\times \\left(\\dfrac{${formatNumber(totalDeltas.m, 4)}}{${formatNumber(means.m, 4)}} + \\dfrac{${formatNumber(vDelta, 6)}}{${formatNumber(vMean, 6)}}\\right)`,
+    ),
   );
 
   setCalculationValue(
@@ -712,6 +749,8 @@ function renderAutoFillResult(partId, calculation, series, deltaHt) {
     `calc-${partId}-result-p`,
     `(${formatNumber(pMean, 6)} ± ${formatNumber(pDelta, 6)})`,
   );
+
+  typesetTargets(mathTargets.filter(Boolean));
 }
 
 function bindAutoFillCalculation() {

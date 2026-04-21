@@ -45,9 +45,9 @@ const TASK_METHOD_HTML = `
       <p>Nhiệm vụ: đo các hằng số cơ bản: chiều dài, khối lượng, thời gian.</p>
       <p>Phương pháp đo:</p>
       <p class="pl-4">Độ chính xác của thước kẹp: CCX = 0.05 (mm).</p>
-      <p class="pl-4">Độ biến thiên khối lượng hệ thống của khối nhôm là: \( \Delta m_{ht} = 0.01\,g \).</p>
+      <p class="pl-4">Độ biến thiên khối lượng hệ thống của khối nhôm là: \\( \\Delta m_{ht} = 0.01\\,g \\).</p>
       <p class="pl-4">Độ chính xác của thước panme: CCX = 0.01 (mm).</p>
-      <p class="pl-4">Độ biến thiên khối lượng hệ thống của khối đồng là: \( \Delta m_{ht} = 0.01\,g \).</p>
+      <p class="pl-4">Độ biến thiên khối lượng hệ thống của khối đồng là: \\( \\Delta m_{ht} = 0.01\\,g \\).</p>
     </div>
   </div>
 `;
@@ -149,7 +149,7 @@ function buildPartDataTable(part) {
         ${buildCalculationItem(calcItems[3])}
       </div>
 
-      <p class="text-base md:text-xl font-bold pt-2">IV. Ghi kết quả và làm tròn số</p>
+      <p class="text-base md:text-xl font-bold pt-2">IV. Ghi kết quả</p>
       <div class="flex flex-col gap-y-2 md:gap-y-3 text-xs md:text-lg leading-relaxed pl-1 md:pl-2 overflow-x-auto">
         ${resultFormulas.map(buildMathLine).join("")}
       </div>
