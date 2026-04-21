@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng Báo Cáo Thực Hành Vật Lý</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Thư viện MathJax để hiển thị công thức toán học -->
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <style>
+      .editable-cell:focus {
+        outline: 2px solid #3b82f6;
+        background-color: #eff6ff;
+      }
+      table td,
+      table th {
+        border: 1px solid #000;
+      }
+      /* Đảm bảo công thức toán học không làm vỡ dòng */
+      .mjx-chtml {
+        margin: 0 !important;
+      }
+    </style>
+    <script src="./components/lab1.js" defer></script>
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <!-- Thông tin chung -->
+    <div id="general-info"></div>
+
+    <!-- I. Nhiệm vụ và phương pháp đo-->
+    <div id="task-method"></div>
+
+    <!-- II. Bảng số liệu (Nhập vào các giá trị đo) -->
+    <div id="data-table"></div>
+
+    <!-- II.1. Tính toán -->
+    <!-- II.2. Ghi kết quả và làm tròn số -->
+    <div id="caculation"></div>
+  </body>
+</html>
